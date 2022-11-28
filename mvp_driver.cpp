@@ -10,5 +10,10 @@ int main(int argc, char* argv[]) {
 	int *A = new int[M * N];
 	
 	matrix_vector(C, A, B);
+
+	delete[] A;
+	delete[] B;
+	delete[] C;
+
 	return 0;
 }
