@@ -1,0 +1,9 @@
+[submodule "buildit"]
+	path = buildit
+	url = https://github.com/BuildIt-lang/buildit.git
+[submodule "d2x"]
+	path = d2x
+	url = https://github.com/BuildIt-lang/d2x.git
+[submodule "graphit"]
+	path = graphit
+	url = https://github.com/GraphIt-DSL/graphit.git

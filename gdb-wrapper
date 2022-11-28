@@ -1,0 +1,3 @@
+#!/bin/bash
+
+gdb --command=d2x/helpers/gdb/d2x-gdb.init $@
