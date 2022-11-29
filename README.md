@@ -208,3 +208,54 @@ xvars c.constant_val
 You will see that `b` is the only tensor that is currently initalized as a constant and the value is 1. This is consistent with the fact that the DSL inserts a constant (`1`) where `b` is referenced in the einsum expression. Feel free to change the input to the DSL in the source file `einsum.cpp` in the main repo at line number - 347. If you make any changes, please recompile applications using `bash build_apps.sh` as before. 
 
 Feel free to navigate around with `next` or `step` commands and viewing the extended state with `xlist`, `xvars`, `xframe` and `xbt`. Once you are satisfied exit the debugger with `quit`. Hit y to confirm when prompted. 
+
+
+## Section 3: Write a small program with BuildIt and check for debugging support.
+
+We want to demonstrate that any programs written with BuildIt now have debugging support. You can copy the simple power function example from the BuildIt website - `https://buildit.so/tryit/`. This example is as it is from the website. Save it in a file called `power.cpp` in the top level directory of the repo. 
+
+We will now compile it with D2X enabled BuildIt with the command - 
+
+```
+g++ power.cpp -o build/power-gen $(make --no-print-directory -C buildit compile-flags) $(make --no-print-directory -C buildit linker-flags)
+```
+
+The `$(make --no-print-directory -C buildit compile-flags) $(make --no-print-directory -C buildit linker-flags)` is the BuildIt prescribed way of pulling compile and linker flags from BuildIt. If you want to view these flags, you can run the command - 
+
+```
+echo $(make --no-print-directory -C buildit compile-flags) $(make --no-print-directory -C buildit linker-flags)
+```
+
+Great! Now let us run this program to generate our power specialization. Run the command - 
+
+```
+./build/power-gen > build/power.cpp
+```
+
+Feel free to view the generated file `build/power.cpp` that has the implementation of power specialized for exponent = 15. 
+
+Let us now compile this generated code using - 
+
+```
+g++ -g build/power.cpp -o build/power -I d2x/include d2x/runtime/d2x_runtime.cpp -ldwarf -lunwind -ldl --include=d2x/include/d2x_runtime/d2x_runtime.h
+```
+
+Let us now attach the debugger with - 
+
+```
+./gdb-wrapper --args ./build/power
+```
+
+We can start by inserting breakpoint at the generated function `power_15` with - 
+
+```
+break 7
+run
+```
+
+You can now step line by line with the command `next`. At each line you can view the source with `xlist`. Most importantly at each line you can view the exponent value with the command `xvars` and `xvars exponent`. As you run `next` and run `xvars exponent` at each line you can see how the static variable `exponent` had changed in the first stage code. You can also see the first stage code with `xlist`. 
+
+When done exploring quit the debugger with the command `quit`. Hit y to confirm. 
+
+
+
