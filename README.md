@@ -258,4 +258,41 @@ You can now step line by line with the command `next`. At each line you can view
 When done exploring quit the debugger with the command `quit`. Hit y to confirm. 
 
 
+## (Optional) Section 4: Viewing code changes
+Now that we are convinced that D2X makes it view the generated debug information, we will try to count the lines of code changes required to enable D2X support in GraphIt and BuildIt (as shown in Figure 10 and Figure 15 of the paper). 
 
+From the top level directory, navigate to the GraphIt directory with the command - 
+
+```
+cd graphit
+```
+
+Now view the changes we made for enabling D2X with -
+
+```
+git diff master d2x-debug
+``` 
+
+You will see that most of the changes are in the backend and are calls to D2X-C API to encode source and variable information in the generated code. To see a summary of the changes, run - 
+
+```
+git diff --stat master d2x-debug
+```
+
+The last line shows the total insertions and deletions. You can see the numbers are pretty close to the numbers in Figure 10. It is not exactly the same because a handful of lines have been changed since the submission. The change is very minor (10 more lines). 
+
+Similarly you can view the changes for BuildIt by navigating to BuildIt directory from the top level directory - 
+
+```
+cd buildit
+```
+
+Once again you can run - 
+
+```
+git diff --stat master dtx-debug
+```
+
+You can compare the number of lines changed with the numbers in Figure 15 of the paper. The delta for this one doesn't match exactly with the numbers in the paper since BuildIt itself has changed a lot since the submission. We also swapped a dependency of the package between the submission and the preparation of these artifacts. But you will see that the numbers aren't too different and the overall percentage is similar. 
+
+This shows that to adopt D2X and add debugging support, the developer has to make very little changes. 
