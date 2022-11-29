@@ -66,7 +66,7 @@ If any step fails, you can fix the issue and run the script again.
 
 Once the applications are built, we are ready to start debugging them. We will start with Section 1. 
 
-## Section 1 - Debugging PageRankDelta generated with GraphIt. 
+## Section 1: Debugging PageRankDelta generated with GraphIt. 
 Please take a look at Section 5.1 of the paper if you haven't already. We will be attaching our favorite debugger `gdb` to the generated code and view the generated code, DSL input and DSL variables. 
 You can start the debugger as - 
 
@@ -148,3 +148,63 @@ Feel free to navigate and run `step` or `next` and view the code around.
 When done viewing this, exit the debugger with the `quit` command. You might need to confirm by hitting y. 
 
 
+## Section 2: Debugging Einsum DSL and generated Matrix Vector multiplication written with BuildIt
+In the Section 5.2 of the paper we demonstrated how D2X can be applied to the BuildIt DSL framework. Once this is done, any DSL written on top of BuildIt would get support for debugging without any change. We showed the example of an Einsum DSL in the paper. We will test the same here. 
+
+Once again, start by running the debugger as - 
+
+```
+./gdb-wrapper --args ./build/mvp
+```
+
+Once inside the debugger, insert breakpoint at the start of matrix_vector and start with the commands - 
+
+```
+break matrix_vector
+run
+```
+
+Execution will stop at the start of the matrix_vector function. We will directly jump to the point where the matrix vector multiplication happens. Insert a breakpoint and continue with - 
+
+```
+break 20
+c
+```
+
+The execution will stop inside a doubly nested loop that does the reduction for Matrix Vector product. Once again view the extended stack, the extended source with the commands - 
+
+```
+xbt
+xlist
+xframe
+```
+
+You can see the einsum expression in the DSL by running the commands - 
+
+```
+xframe 7
+xlist
+```
+
+You should see the listing like - `c[i] = 2 * a[i][j] * b[j];`. What we have done here is to show the source code and static variables from the first stage execution. Since the Einsum DSL is implemented as an embedded DSL with BuildIt, we can see the internals of the compiler and how specialization in the first stage generates the code. 
+
+This Einsum DSL implements constant propagation by tracking tensors that are constant as static variables. You can see all these analysis variables by running the command - 
+
+```
+xvars
+```
+
+You should 6 variables. View each of them by running - 
+
+```
+xvars a.is_constant
+xvars a.constant_val
+xvars b.is_constant
+xvars b.constant_val
+xvars c.is_constant
+xvars c.constant_val
+```
+
+You will see that `b` is the only tensor that is currently initalized as a constant and the value is 1. This is consistent with the fact that the DSL inserts a constant (`1`) where `b` is referenced in the einsum expression. Feel free to change the input to the DSL in the source file `einsum.cpp` in the main repo at line number - 347. If you make any changes, please recompile applications using `bash build_apps.sh` as before. 
+
+Feel free to navigate around with `next` or `step` commands and viewing the extended state with `xlist`, `xvars`, `xframe` and `xbt`. Once you are satisfied exit the debugger with `quit`. Hit y to confirm when prompted. 
