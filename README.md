@@ -12,7 +12,7 @@ The source code of all the modified applications has been added to this reposito
 
 ## Hardware and Software requirements
 We expect you to run the code on a Linux system (tested with Ubuntu 18.04 and Ubuntu 20.04). There are some problems with Ubuntu 22.04 and the newer version of libraries they come with.
-If you do not have access to any supported systems, please contact us. We can share access to our systems. We expect the system to have around 50 GB free space. 
+If you do not have access to any supported systems, please contact us. We can share access to our systems. We expect the system to have around 1 GB free space. 
 
 Following are the software requirements for all the sections - 
 1. g++ >= 7.5 (comparable clang++ would also work. You might have to change the compiler in the scripts)
@@ -270,13 +270,13 @@ cd graphit
 Now view the changes we made for enabling D2X with -
 
 ```
-git diff master d2x-debug
+git diff master HEAD
 ``` 
 
 You will see that most of the changes are in the backend and are calls to D2X-C API to encode source and variable information in the generated code. To see a summary of the changes, run - 
 
 ```
-git diff --stat master d2x-debug
+git diff --stat master HEAD
 ```
 
 The last line shows the total insertions and deletions. You can see the numbers are pretty close to the numbers in Figure 10. It is not exactly the same because a handful of lines have been changed since the submission. The change is very minor (10 more lines). 
@@ -290,7 +290,7 @@ cd buildit
 Once again you can run - 
 
 ```
-git diff --stat master dtx-debug
+git diff --stat master HEAD
 ```
 
 You can compare the number of lines changed with the numbers in Figure 15 of the paper. The delta for this one doesn't match exactly with the numbers in the paper since BuildIt itself has changed a lot since the submission. We also swapped a dependency of the package between the submission and the preparation of these artifacts. But you will see that the numbers aren't too different and the overall percentage is similar. 
