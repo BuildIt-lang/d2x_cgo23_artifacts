@@ -7,3 +7,9 @@
 [submodule "graphit"]
 	path = graphit
 	url = https://github.com/GraphIt-DSL/graphit.git
+[submodule "deps/libunwind"]
+	path = deps/libunwind
+	url = https://github.com/libunwind/libunwind.git
+[submodule "deps/libdwarf"]
+	path = deps/libdwarf
+	url = https://github.com/davea42/libdwarf-code.git
