@@ -1,3 +1,4 @@
+set -e
 . source_deps
 # Compile Page Rank Delta with GraphIt
 echo "Generating and compiling PageRank Delta with Graphit"

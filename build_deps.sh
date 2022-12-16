@@ -1,3 +1,4 @@
+set -e
 cd deps
 bash build_unwind.sh
 bash build_dwarf.sh
@@ -9,13 +10,17 @@ export CPATH=$CPATH:$(pwd)/deps/libunwind/install/usr/local/include
 export LIBRARY_PATH=$LIBRARY_PATH:$(pwd)/deps/libunwind/install/usr/local/lib
 export LIBRARY_PATH=$LIBRARY_PATH:$(pwd)/deps/libdwarf/build/libdwarf
 
+export CC=gcc
+export CXX=g++
+
 # Configure all dependencies
 echo BUILDIT_DIR=$(pwd)/buildit > d2x/Makefile.inc
 echo D2X_PATH=$(pwd)/d2x > buildit/Makefile.inc
 echo D2X_DEBUGGING=1 >> buildit/Makefile.inc
 sed -i 's/-lelf//g' buildit/Makefile
 sed -i 's/-ldl/-ldl -lelf/g' buildit/Makefile
-
+sed -i 's/ elf//g' graphit/CMakeLists.txt
+sed -i 's/dl)/dl elf)/g' graphit/CMakeLists.txt
 
 mkdir -p build
 
