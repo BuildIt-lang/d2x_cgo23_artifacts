@@ -1,0 +1,7 @@
+export CPATH=$CPATH:$(pwd)/deps/libdwarf/build:$(pwd)/deps/libdwarf
+export CPATH=$CPATH:$(pwd)/deps/libunwind/install/usr/local/include
+
+export LIBRARY_PATH=$LIBRARY_PATH:$(pwd)/deps/libunwind/install/usr/local/lib
+export LIBRARY_PATH=$LIBRARY_PATH:$(pwd)/deps/libdwarf/build/libdwarf
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)/deps/libunwind/install/usr/local/lib
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)/deps/libdwarf/build/libdwarf
