@@ -1,3 +1,4 @@
+set -e
 cd libunwind 
 autoreconf -i
 ./configure

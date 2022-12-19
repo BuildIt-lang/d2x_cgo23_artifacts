@@ -1,3 +1,4 @@
+set -e
 cd libdwarf
 rm -rf build
 mkdir build

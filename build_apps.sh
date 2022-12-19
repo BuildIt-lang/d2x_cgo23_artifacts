@@ -1,3 +1,4 @@
+set -e
 # Compile Page Rank Delta with GraphIt
 echo "Generating and compiling PageRank Delta with Graphit"
 ./graphit/build/bin/graphitc -f graphit/apps/pagerankdelta.gt -o build/pagerankdelta.cpp
