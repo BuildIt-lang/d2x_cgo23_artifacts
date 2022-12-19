@@ -21,9 +21,10 @@ Following are the software requirements for all the sections -
 4. cmake >= 3.10
 5. bash
 6. git
-7. Libraries: libdwarf1, libdwarf-dev, libunwind-dev
+7. Libraries: libdwarf1, libdwarf-dev (>=20180129-1), libunwind-dev (>=1.2.1), libelf-dev (DEB), elfutils-libelf-devel (RPM)
 
-All the software and libraries can be installed with the `apt` package manager. Please make sure all the dependencies (especially the library dependencies) are installed before you start. 
+All the software and libraries can be installed with the `apt` package manager (or the `yum` package manager). Please make sure all the dependencies (especially the library dependencies) are installed before you start. 
+
 
 
 ## How to run
@@ -42,6 +43,41 @@ git submodule update --init --recursive
 ```
 
 Now navigate to the main repostitory and continue the rest of the steps.
+
+### Check if prerequisites are correct
+Before we start building the project, we want to make sure that the installed versions of the prerequisites are correct. As mentioned above, we need libdwarf-dev version >= 20180129-1 and libunwind-dev version >= 1.2.1. Older versions of these libraries may not be supported. To check what version of the package is installed run the commands - 
+
+```
+apt search libdwarf-dev
+apt search libunwind-dev
+```
+
+The package manager will show the version of the package available. The package should also indicate that is installed with `[installed]`. If the appropriate versions of the packages are installed, you can skip to the next "Build all dependencies". 
+
+If only an older version is available and the required versions cannot be installed by the package manager, please follow the following steps to build the library from source. 
+
+We will first ensure that any older versions of the packages are uninstalled so that they do not conflict with version we will build from source. Run the command - 
+
+```
+sudo apt-get remove libdwarf-dev libdwarf1 libunwind
+```
+
+Feel free to install the old versions again after you are done using D2X. 
+
+We will not build the correct versions. For your convenience we have already included the source of the appropriate versions as submodules in this repo. To build them, run the command - 
+
+```
+bash build_preq.sh
+```
+
+If this step succeeds, we are ready to use these versions. To make these versions available to D2X, we will have to include them in our path. Run the command - 
+
+```
+source source_preq
+```
+
+Remember that you will have to run the `source` command everytime you start a new command line session. Now that we have built the appropriate versions, we are ready to build the D2X repo. 
+
 
 ### Build all dependencies
 
@@ -62,7 +98,7 @@ Once again, we have packaged all steps to build these in a script. You can run t
 bash build_apps.sh
 ```
 
-If any step fails, you can fix the issue and run the script again. 
+If any step fails, you can fix the issue and run the script again. If you see any errors related to `dwarf...` functions, you are probably using an old version of `libdwarf`. Please follow the steps above to build the required libraries from source and make sure that you have uninstalled the old versions, 
 
 Once the applications are built, we are ready to start debugging them. We will start with Section 1. 
 
