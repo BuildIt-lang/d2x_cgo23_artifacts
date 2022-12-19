@@ -1,14 +1,3 @@
-cd deps
-bash build_unwind.sh
-bash build_dwarf.sh
-cd ..
-
-export CPATH=$CPATH:$(pwd)/deps/libdwarf/build:$(pwd)/deps/libdwarf
-export CPATH=$CPATH:$(pwd)/deps/libunwind/install/usr/local/include
-
-export LIBRARY_PATH=$LIBRARY_PATH:$(pwd)/deps/libunwind/install/usr/local/lib
-export LIBRARY_PATH=$LIBRARY_PATH:$(pwd)/deps/libdwarf/build/libdwarf
-
 # Configure all dependencies
 echo BUILDIT_DIR=$(pwd)/buildit > d2x/Makefile.inc
 echo D2X_PATH=$(pwd)/d2x > buildit/Makefile.inc
